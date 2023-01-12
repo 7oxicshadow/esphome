@@ -20,7 +20,7 @@ namespace esphome {
 namespace aht10 {
 
 static const char *const TAG = "aht10";
-static const uint8_t AHT10_CALIBRATE_CMD[] = {0xE1, 0x08, 0x00};
+static const uint8_t AHT10_CALIBRATE_CMD[] = {0xBE, 0x08, 0x00};
 static const uint8_t AHT10_MEASURE_CMD[]   = {0xAC, 0x33, 0x00};
 
 static const uint8_t AHT10_NORMAL_CMD[]    = {0xA8, 0x00, 0x00};

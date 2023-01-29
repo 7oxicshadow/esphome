@@ -22,8 +22,6 @@ namespace aht25 {
 static const char *const TAG = "aht25";
 static const uint8_t AHT25_STATUS_CMD[] = {0x71};
 
-static const uint8_t AHT25_CALIBRATE_CMD[] = {0x70, 0xFF, 0x00, 0x00};
-
 static const uint8_t AHT25_MEASURE_CMD[]   = {0xAC, 0x33, 0x00};
 
 static const uint8_t AHT25_NORMAL_CMD[]    = {0xA8, 0x00, 0x00};
@@ -41,8 +39,7 @@ uint8_t AHT25Component::reset_REG(uint8_t addr) {
   uint8_t READ_DATA[] = {0x00, 0x00, 0x00};
 
   //build the new data to send
-  TMP_DATATOSEND = AHT25_CALIBRATE_CMD;
-  TMP_DATATOSEND[1] = addr;
+  TMP_DATATOSEND = {0x71, addr, 0x00, 0x00};
 
   if (!this->write_bytes(0, TMP_DATATOSEND, sizeof(TMP_DATATOSEND))) {
     ESP_LOGE(TAG, "Communication with AHT25 failed! - RR1");
@@ -69,10 +66,7 @@ uint8_t AHT25Component::reset_REG(uint8_t addr) {
   delay(AHT25_SECONDARY_DELAY);
 
   //build the new data to send
-  TMP_DATATOSEND = AHT25_CALIBRATE_CMD;
-  TMP_DATATOSEND[1] = 0xB0|addr;
-  TMP_DATATOSEND[2] = READ_DATA[1];
-  TMP_DATATOSEND[3] = READ_DATA[2];
+  TMP_DATATOSEND = {0x71, (0xB0|addr), READ_DATA[1], READ_DATA[2]};
 
   if (!this->write_bytes(0, TMP_DATATOSEND, sizeof(TMP_DATATOSEND))) {
     ESP_LOGE(TAG, "Communication with AHT25 failed! - RR4");
@@ -184,7 +178,7 @@ void AHT25Component::update() {
   uint32_t raw_temperature = ((data[3] & 0x0F) << 16) | (data[4] << 8) | data[5];
   uint32_t raw_humidity = ((data[1] << 16) | (data[2] << 8) | data[3]) >> 4;
 
-  LOG_SENSOR("GOT RAW TEMP: ", (data[3] & 0x0F), ", ", data[4], ", " data[5], " Combined = ", raw_temperature)
+  LOG_SENSOR("  ", "GOT RAW TEMP VAL = ", raw_temperature)
 
   float temperature = ((200.0f * (float) raw_temperature) / 1048576.0f) - 50.0f;
   float humidity;

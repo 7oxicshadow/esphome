@@ -21,9 +21,9 @@ class AHT25Component : public PollingComponent, public i2c::I2CDevice {
   sensor::Sensor *temperature_sensor_{nullptr};
   sensor::Sensor *humidity_sensor_{nullptr};
 
-private:
+ private:
   void reset_REG(uint8_t addr) override;
-// };
+ };
 
 }  // namespace aht25
 }  // namespace esphome

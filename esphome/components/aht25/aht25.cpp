@@ -33,7 +33,6 @@ static const uint8_t AHT25_HUMIDITY_DELAY = 30;  // ms
 static const uint8_t AHT25_ATTEMPTS = 3;         // safety margin, normally 3 attempts are enough: 3*30=90ms
 
 uint8_t AHT25Component::reset_REG(uint8_t addr) {
-{
 
   uint8_t TMP_DATATOSEND[] = {0x00, 0x00, 0x00, 0x00};
   uint8_t READ_DATA[] = {0x00, 0x00, 0x00};

@@ -38,7 +38,10 @@ uint8_t AHT25Component::reset_REG(uint8_t addr) {
   uint8_t READ_DATA[] = {0x00, 0x00, 0x00};
 
   //build the new data to send
-  TMP_DATATOSEND = {0x71, addr, 0x00, 0x00};
+  TMP_DATATOSEND[0] = 0x71;
+  TMP_DATATOSEND[1] = addr;
+  TMP_DATATOSEND[2] = 0x00;
+  TMP_DATATOSEND[3] = 0x00;
 
   if (!this->write_bytes(0, TMP_DATATOSEND, sizeof(TMP_DATATOSEND))) {
     ESP_LOGE(TAG, "Communication with AHT25 failed! - RR1");
@@ -65,7 +68,10 @@ uint8_t AHT25Component::reset_REG(uint8_t addr) {
   delay(AHT25_SECONDARY_DELAY);
 
   //build the new data to send
-  TMP_DATATOSEND = {0x71, (0xB0|addr), READ_DATA[1], READ_DATA[2]};
+  TMP_DATATOSEND[0] = 0x71;
+  TMP_DATATOSEND[1] = (0xB0|addr);
+  TMP_DATATOSEND[2] = READ_DATA[1];
+  TMP_DATATOSEND[3] = READ_DATA[2];
 
   if (!this->write_bytes(0, TMP_DATATOSEND, sizeof(TMP_DATATOSEND))) {
     ESP_LOGE(TAG, "Communication with AHT25 failed! - RR4");

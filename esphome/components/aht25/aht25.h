@@ -22,7 +22,7 @@ class AHT25Component : public PollingComponent, public i2c::I2CDevice {
   sensor::Sensor *humidity_sensor_{nullptr};
 
  private:
-  void reset_REG(uint8_t addr) override;
+  uint8_t reset_REG(uint8_t addr) override;
  };
 
 }  // namespace aht25
